@@ -1,21 +1,15 @@
-export default function StatusBar(){
+import { NavLink } from "react-router-dom";
 
-    return(
+export default function StatusBar() {
+  return (
+    <footer className="statusbar">
 
-        <footer className="statusbar">
+      <NavLink to="/">Knowledge</NavLink>
 
-            <span>󰣇 Arch Linux</span>
+      <NavLink to="/projects">Projects</NavLink>
 
-            <span>󰒲 Hyprland</span>
+      <NavLink to="/about">About</NavLink>
 
-            <span>󰋖 Wayland</span>
-
-            <span>󰄬 JLPT N2</span>
-
-            <span>󰊤 GitHub</span>
-
-        </footer>
-
-    )
-
+    </footer>
+  );
 }

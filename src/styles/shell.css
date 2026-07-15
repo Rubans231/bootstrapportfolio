@@ -11,35 +11,13 @@
 
 .topbar{
 
-    opacity:0;
+    position:relative;
 
-    transform:
-        translateY(-24px)
-        scale(.985);
+    width:100%;
 
-    transition:
-        opacity .45s cubic-bezier(.22,1,.36,1),
-        transform .45s cubic-bezier(.22,1,.36,1);
+    height:56px;
 
-    width:min(1200px,92%);
-    margin:18px auto 0;
-    padding:0 24px;
-
-    height:54px;
-
-    border-radius:999px;
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    background:var(--glass);
-
-    border:1px solid var(--border);
-
-    box-shadow:var(--shadow);
-
-    backdrop-filter:blur(18px);
+    margin-top:18px;
 
 }
 
@@ -47,6 +25,116 @@
 
     opacity:1;
     transform:none;
+
+}
+
+/* =======================================================
+   Waybar
+======================================================= */
+
+.waybar-module{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:14px;
+
+    min-height:48px;
+
+    padding:2px;
+
+    border:2px solid var(--border);
+
+    background:rgba(18,16,15,.82);
+
+    backdrop-filter:blur(18px);
+
+    transition:
+
+        all .30s cubic-bezier(.55,-0.68,.48,1.682);
+
+}
+
+.waybar-module.left{
+
+    position:absolute;
+
+    left:var(--shell-margin);
+
+    top:0;
+
+    padding-inline:18px;
+
+    border-radius:0 0 36px 0;
+
+}
+
+.waybar-module.center{
+
+    position:absolute;
+
+    left:50%;
+
+    top:0;
+
+    transform:translateX(-50%);
+
+    width:min(560px,60vw);
+
+    justify-content:center;
+
+    border-radius:60px 0 60px 0;
+
+}
+
+.waybar-module.right{
+
+    position:absolute;
+
+    right:var(--shell-margin);
+
+    top:0;
+
+    padding-inline:18px;
+
+    border-radius:36px 0 0 0;
+
+}
+
+.lang{
+
+    color:var(--muted);
+
+    padding:5px 10px;
+
+    border-radius:9px;
+
+    transition:
+
+        all .30s cubic-bezier(.55,-0.68,.48,1.682);
+
+}
+
+.lang.active{
+
+    background:var(--accent);
+
+    color:#111;
+
+}
+
+.page-title{
+
+    color:var(--accent);
+
+    letter-spacing:.15em;
+
+    font-weight:700;
+
+    white-space:nowrap;
 
 }
 
@@ -76,51 +164,93 @@
 
     display:flex;
 
-    gap:24px;
+    align-items:stretch;
+
+    justify-content:center;
+
+    gap:8px;
+
+    width:100%;
+
+    height:100%;
 
 }
 
-.nav button{
+.nav a{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    min-height:36px;
+
+    padding:0 12px;
 
     color:var(--muted);
 
-    transition:.25s;
+    border-radius:9px;
 
     position:relative;
 
-    font-size:.88rem;
+    overflow:hidden;
+
+    z-index:1;
+
+    transition:
+
+        all .30s cubic-bezier(.55,-0.68,.48,1.682);
 
 }
 
-.nav button:hover{
+/* .nav a{ */
+/**/
+/*     position:relative; */
+/**/
+/*     overflow:hidden; */
+/**/
+/*     z-index:1; */
+/**/
+/* } */
 
-    color:var(--text);
-
-}
-
-.nav button::after{
+.nav a::before{
 
     content:"";
 
     position:absolute;
 
-    left:0;
-
-    bottom:-8px;
-
-    width:0;
-
-    height:2px;
+    inset:2px;
 
     background:var(--accent);
 
-    transition:.25s;
+    border-radius:9px;
+
+    opacity:0;
+
+    transform:scale(.9);
+
+    transition:
+
+        opacity .25s ease,
+
+        transform .25s ease;
+
+    z-index:-1;
 
 }
 
-.nav button:hover::after{
+.nav a.active{
 
-    width:100%;
+    color:#111;
+
+}
+
+.nav a.active::before{
+
+    opacity:1;
+
+    transform:scale(1);
 
 }
 
@@ -169,6 +299,8 @@
 .desktop::before{
 
     content:"";
+
+    pointer-events:none;
 
     position:absolute;
 
@@ -252,54 +384,40 @@
    STATUS BAR
 ======================================================= */
 
-.statusbar{
-
-    opacity:0;
-
-    transform:
-        translateY(24px)
-        scale(.985);
-
-    transition:
-
-        opacity .45s cubic-bezier(.22,1,.36,1) .12s,
-
-        transform .45s cubic-bezier(.22,1,.36,1) .12s;
-
-    width:min(900px,90%);
-
-    margin:0 auto 18px;
-
-    height:42px;
-
-    border-radius:999px;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    gap:24px;
-
-    background:var(--glass);
-
-    border:1px solid var(--border);
-
-    box-shadow:var(--shadow);
-
-    backdrop-filter:blur(18px);
+.statusbar a{
 
     color:var(--muted);
 
-    font-size:.82rem;
+    transition:.2s;
 
 }
 
-.shell.startup .statusbar{
+.statusbar a:hover{
 
-    opacity:1;
+    color:var(--text);
 
-    transform:none;
+}
+
+.statusbar a.active{
+
+    color:var(--accent);
+
+    font-weight:600;
+
+}
+
+.page-title{
+
+    color:var(--accent);
+
+    font-size:.95rem;
+
+    font-weight:700;
+
+    letter-spacing:.15em;
+
+    margin:0;
+
+    white-space:nowrap;
 
 }

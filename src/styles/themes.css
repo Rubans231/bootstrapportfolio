@@ -1,5 +1,9 @@
 :root{
 
+    /* Universal waybar hug*/
+    
+    --shell-margin: 4px;
+    
     /* Background */
 
     --bg:#0b0908;

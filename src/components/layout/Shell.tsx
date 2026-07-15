@@ -1,19 +1,22 @@
+import { ReactNode } from "react";
+
 import TopBar from "./TopBar";
-import Desktop from "./Desktop";
 import StatusBar from "./StatusBar";
 
-interface ShellProps {
-  startup: boolean;
+interface Props {
+    children: ReactNode;
 }
 
-export default function Shell({
-  startup,
-}: ShellProps) {
-  return (
-    <div className={`shell ${startup ? "startup" : ""}`}>
-      <TopBar />
-      <Desktop />
-      <StatusBar />
-    </div>
-  );
+export default function Shell({ children }: Props) {
+    return (
+        <div className="shell startup">
+            <TopBar />
+
+            <main className="desktop">
+                {children}
+            </main>
+
+            <StatusBar />
+        </div>
+    );
 }

@@ -18,10 +18,14 @@ const bootLines: BootEntry[] = [
 ];
 
 interface Props {
+  fading: boolean;
   onSkip: () => void;
 }
 
-export default function BootScreen({ onSkip }: Props) {
+export default function BootScreen({
+  fading,
+  onSkip,
+}: Props) {
   const [currentLine, setCurrentLine] = useState(0);
   const [typedText, setTypedText] = useState("");
   const [completedLines, setCompletedLines] = useState<string[]>([]);
@@ -152,7 +156,10 @@ export default function BootScreen({ onSkip }: Props) {
   */
 
   return (
-    <section className="boot-screen" onClick={onSkip}>
+      <section
+        className={`boot-screen ${fading ? "fade" : ""}`}
+        onClick={onSkip}
+      >
       <h1>NaranderOS 3.0</h1>
 
       <small>Linux 6.16.0-arch1</small>

@@ -11,8 +11,8 @@
   background: #080706;
 
   transition:
-    opacity .18s ease,
-    visibility .18s ease;
+    opacity .28s ease,
+    filter .28s ease;
 
   display: flex;
   flex-direction: column;
@@ -28,4 +28,14 @@
   user-select: none;
 
   overflow: hidden;
+}
+
+.boot-screen.fade{
+
+    opacity:0;
+
+    filter:blur(2px);
+
+    pointer-events:none;
+
 }

@@ -1,0 +1,31 @@
+.boot-screen {
+
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  width: 100vw;
+  height: 100vh;
+
+  background: #080706;
+
+  transition:
+    opacity .18s ease,
+    visibility .18s ease;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  padding: 80px;
+
+  font-family: var(--font-mono);
+
+  z-index: 99999;
+
+  cursor: pointer;
+  user-select: none;
+
+  overflow: hidden;
+}

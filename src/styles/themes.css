@@ -1,131 +1,43 @@
-/* =========================================
-   Global Theme Variables
-========================================= */
+:root{
 
-:root {
+    /* Background */
 
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
-  --radius-xl: 28px;
+    --bg:#0b0908;
 
-  --transition-fast: 180ms;
-  --transition-normal: 320ms;
-  --transition-slow: 650ms;
+    --bg-secondary:#12100f;
 
-  --shadow-soft:
-      0 10px 40px rgba(0,0,0,.28);
+    /* Panels */
 
-  --shadow-large:
-      0 25px 80px rgba(0,0,0,.42);
+    --surface:#171211;
 
-  --glass-blur: 18px;
+    --surface-hover:#211816;
 
-  --font-ui: "Inter", sans-serif;
-  --font-heading: "IBM Plex Sans", sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
-}
+    /* Borders */
 
-/* =========================================
-   HOME
-========================================= */
+    --border:#5f4534;
 
-[data-theme="home"] {
+    --border-light:#8d654d;
 
-  --bg: #090806;
+    /* Accent */
 
-  --surface: rgba(28,20,18,.72);
+    --accent:#bf8d63;
 
-  --surface2: rgba(36,26,23,.82);
+    --accent-soft:#d8b18d;
 
-  --text: #ECE8E3;
+    /* Typography */
 
-  --muted: #A89D94;
+    --text:#ebe5df;
 
-  --accent: #C28B63;
+    --muted:#a88d79;
 
-  --accent-hover: #D89A6A;
+    /* Glass */
 
-  --border: rgba(255,255,255,.08);
+    --glass:rgba(27,20,18,.72);
 
-  --glow: rgba(194,139,99,.25);
+    --shadow:
 
-}
+        0 0 0 1px rgba(255,255,255,.02),
 
-/* =========================================
-   ABOUT
-========================================= */
-
-[data-theme="about"] {
-
-  --bg: #1A1B26;
-
-  --surface: rgba(36,40,59,.72);
-
-  --surface2: rgba(47,53,82,.82);
-
-  --text: #C0CAF5;
-
-  --muted: #7AA2F7;
-
-  --accent: #BB9AF7;
-
-  --accent-hover: #CDB2FF;
-
-  --border: rgba(255,255,255,.08);
-
-  --glow: rgba(187,154,247,.20);
-
-}
-
-/* =========================================
-   NOTES
-========================================= */
-
-[data-theme="notes"] {
-
-  --bg: #081018;
-
-  --surface: rgba(12,20,34,.72);
-
-  --surface2: rgba(20,32,52,.82);
-
-  --text: #E6EEF8;
-
-  --muted: #8AB4F8;
-
-  --accent: #64B5F6;
-
-  --accent-hover: #90CAF9;
-
-  --border: rgba(255,255,255,.08);
-
-  --glow: rgba(100,181,246,.18);
-
-}
-
-/* =========================================
-   JAPAN
-========================================= */
-
-[data-theme="jp"] {
-
-  --bg: #F6F4EF;
-
-  --surface: rgba(255,255,255,.82);
-
-  --surface2: rgba(250,250,250,.95);
-
-  --text: #181818;
-
-  --muted: #6F6F6F;
-
-  --accent: #B32025;
-
-  --accent-hover: #D23A3F;
-
-  --border: rgba(0,0,0,.08);
-
-  --glow: rgba(179,32,37,.12);
+        0 0 32px rgba(191,141,99,.08);
 
 }

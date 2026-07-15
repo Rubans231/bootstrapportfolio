@@ -1,0 +1,207 @@
+.shell{
+
+    min-height:100vh;
+
+    display:flex;
+
+    flex-direction:column;
+
+    background:transparent;
+
+}
+
+/* ---------- Top ---------- */
+
+.topbar{
+
+    width:min(1200px,92%);
+
+    margin:18px auto 0;
+
+    padding:0 24px;
+
+    height:54px;
+
+    border-radius:999px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    background:var(--glass);
+
+    border:1px solid var(--border);
+
+    box-shadow:var(--shadow);
+
+    backdrop-filter:blur(18px);
+
+}
+
+/* ---------- Logo ---------- */
+
+.logo{
+
+    color:var(--accent);
+
+    font-size:.85rem;
+
+    font-weight:700;
+
+    letter-spacing:.25em;
+
+    text-transform:uppercase;
+
+}
+
+/* ---------- Nav ---------- */
+
+.nav{
+
+    display:flex;
+
+    gap:24px;
+
+}
+
+.nav button{
+
+    color:var(--muted);
+
+    transition:.25s;
+
+    position:relative;
+
+    font-size:.88rem;
+
+}
+
+.nav button:hover{
+
+    color:var(--text);
+
+}
+
+.nav button::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    bottom:-8px;
+
+    width:0;
+
+    height:2px;
+
+    background:var(--accent);
+
+    transition:.25s;
+
+}
+
+.nav button:hover::after{
+
+    width:100%;
+
+}
+
+/* ---------- Desktop ---------- */
+
+.desktop{
+
+    flex:1;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+/* Ambient glow */
+
+.desktop::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:900px;
+
+    height:900px;
+
+    border-radius:50%;
+
+    background:
+
+    radial-gradient(
+
+        circle,
+
+        rgba(191,141,99,.12),
+
+        transparent 70%
+
+    );
+
+    filter:blur(120px);
+
+}
+
+/* ---------- Placeholder ---------- */
+
+.desktop h2{
+
+    font-size:6rem;
+
+    letter-spacing:.45em;
+
+    color:rgba(255,255,255,.025);
+
+    user-select:none;
+
+}
+
+/* ---------- Status ---------- */
+
+.statusbar{
+
+    width:min(900px,90%);
+
+    margin:0 auto 18px;
+
+    height:42px;
+
+    border-radius:999px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:24px;
+
+    background:var(--glass);
+
+    border:1px solid var(--border);
+
+    box-shadow:var(--shadow);
+
+    backdrop-filter:blur(18px);
+
+    color:var(--muted);
+
+    font-size:.82rem;
+
+}

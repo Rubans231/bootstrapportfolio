@@ -1,49 +1,37 @@
-export default function TopBar(){
+import { NavLink } from "react-router-dom";
+import WaybarModule from "../ui/WaybarModule";
+import usePageTitle from "../../hooks/usePageTitle";
 
-    const items=[
+export default function TopBar() {
+  const title = usePageTitle();
 
-        "01 Home",
+  return (
+    <header className="topbar">
 
-        "02 Projects",
+      <WaybarModule variant="left">
 
-        "03 About",
+        <span className="page-title">{title}</span>
 
-        "04 Notes",
+      </WaybarModule>
 
-        "05 日本語"
+      <WaybarModule variant="center">
 
-    ];
+        <nav className="nav">
+          <NavLink to="/">Knowledge</NavLink>
+          <NavLink to="/projects">Projects</NavLink>
+          <NavLink to="/about">About</NavLink>
+        </nav>
 
-    return(
+      </WaybarModule>
 
-        <header className="topbar">
+      <WaybarModule variant="right">
 
-            <div className="logo">
+        <button className="lang active">EN</button>
 
-                NaranderOS
+        <button className="lang">日本語</button>
 
-            </div>
+      </WaybarModule>
 
-            <nav className="nav">
-
-                {
-
-                    items.map(item=>
-
-                        <button key={item}>
-
-                            {item}
-
-                        </button>
-
-                    )
-
-                }
-
-            </nav>
-
-        </header>
-
-    )
-
+    </header>
+  );
 }

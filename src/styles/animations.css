@@ -1,0 +1,34 @@
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(30px);
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+    }
+}
+
+.fade-up{
+
+    animation:fadeUp .8s ease forwards;
+}
+
+.glass{
+
+    backdrop-filter:blur(var(--glass-blur));
+
+    background:var(--surface);
+
+    border:1px solid var(--border);
+
+    box-shadow:var(--shadow-soft);
+
+    border-radius:var(--radius-lg);
+}

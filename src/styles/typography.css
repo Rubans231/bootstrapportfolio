@@ -1,0 +1,44 @@
+h1{
+
+    font-family:var(--font-heading);
+
+    font-size:5rem;
+
+    font-weight:700;
+
+    line-height:1;
+}
+
+h2{
+
+    font-size:3rem;
+
+    font-weight:700;
+}
+
+h3{
+
+    font-size:2rem;
+}
+
+p{
+
+    line-height:1.8;
+
+    color:var(--muted);
+}
+
+small{
+
+    color:var(--muted);
+}
+
+code{
+
+    font-family:var(--font-mono);
+}
+
+pre{
+
+    font-family:var(--font-mono);
+}

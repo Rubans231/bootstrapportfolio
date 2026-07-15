@@ -1,42 +1,44 @@
-body{
+@import "./themes.css";
+@import "./typography.css";
+@import "./animations.css";
+@import "./shell.css";
+@import "./boot.css";
 
-    background:
-
-    radial-gradient(
-        circle at top,
-        #18110d 0%,
-        #0b0908 55%,
-        #080706 100%
-    );
-
-    color:var(--text);
-
-    overflow-x:hidden;
-
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-*{
-
-    box-sizing:border-box;
-
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
-button{
+body {
+  background: radial-gradient(
+    circle at top,
+    #18110d 0%,
+    #0b0908 55%,
+    #080706 100%
+  );
 
-    font:inherit;
-
-    background:none;
-
-    border:none;
-
-    cursor:pointer;
-
+  color: var(--text);
+  overflow-x: hidden;
 }
 
-a{
+button {
+  font: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
 
-    color:inherit;
-
-    text-decoration:none;
-
+a {
+  color: inherit;
+  text-decoration: none;
 }

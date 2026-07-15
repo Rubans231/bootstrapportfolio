@@ -1,0 +1,111 @@
+.knowledge-page{
+
+    position:relative;
+
+    width:100%;
+
+    height:100%;
+
+    min-height:calc(100vh - 140px);
+
+}
+
+.graph-canvas{
+
+    position:absolute;
+
+    inset:0;
+
+}
+
+.graph-placeholder{
+
+    width:100%;
+
+    height:100%;
+
+    display:grid;
+
+    place-items:center;
+
+    color:rgba(255,255,255,.06);
+
+    font-size:3rem;
+
+    letter-spacing:.15em;
+
+}
+
+.vault-panel{
+
+    position:absolute;
+
+    left:6rem;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    width:470px;
+
+    padding:2rem;
+
+    border-radius:22px;
+
+    background:rgba(18,18,18,.32);
+
+    backdrop-filter:blur(20px);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:0 20px 70px rgba(0,0,0,.35);
+
+}
+
+.vault-panel h1{
+
+    margin-bottom:1rem;
+
+}
+
+.vault-panel p{
+
+    color:var(--muted);
+
+    line-height:1.8;
+
+}
+
+.vault-panel ul{
+
+    margin:1.5rem 0;
+
+    padding-left:1.25rem;
+
+}
+
+.vault-stats{
+
+    display:flex;
+
+    gap:1rem;
+
+    margin:2rem 0;
+
+}
+
+.projects-button{
+
+    display:inline-block;
+
+    padding:.9rem 1.6rem;
+
+    border-radius:12px;
+
+    background:var(--accent);
+
+    color:#111;
+
+    font-weight:700;
+
+}

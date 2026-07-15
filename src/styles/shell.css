@@ -1,35 +1,28 @@
 .shell{
-
     min-height:100vh;
-
     display:flex;
-
     flex-direction:column;
-
     background:transparent;
-
 }
 
-/* ---------- Top ---------- */
+/* =======================================================
+   TOP BAR
+======================================================= */
 
 .topbar{
 
     opacity:0;
 
     transform:
-    translateY(-18px)
-    scale(.985);
+        translateY(-24px)
+        scale(.985);
 
     transition:
-
-    opacity .45s ease,
-
-    transform .45s ease;
+        opacity .45s cubic-bezier(.22,1,.36,1),
+        transform .45s cubic-bezier(.22,1,.36,1);
 
     width:min(1200px,92%);
-
     margin:18px auto 0;
-
     padding:0 24px;
 
     height:54px;
@@ -37,9 +30,7 @@
     border-radius:999px;
 
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
 
     background:var(--glass);
@@ -54,13 +45,14 @@
 
 .shell.startup .topbar{
 
-opacity:1;
-
-transform:none;
+    opacity:1;
+    transform:none;
 
 }
 
-/* ---------- Logo ---------- */
+/* =======================================================
+   LOGO
+======================================================= */
 
 .logo{
 
@@ -76,7 +68,9 @@ transform:none;
 
 }
 
-/* ---------- Nav ---------- */
+/* =======================================================
+   NAV
+======================================================= */
 
 .nav{
 
@@ -130,7 +124,9 @@ transform:none;
 
 }
 
-/* ---------- Desktop ---------- */
+/* =======================================================
+   DESKTOP
+======================================================= */
 
 .desktop{
 
@@ -149,18 +145,16 @@ transform:none;
     opacity:0;
 
     transform:
-
-    translateY(8px)
-
-    scale(.992);
+        translateY(10px)
+        scale(.992);
 
     transition:
-
-    opacity .5s ease .2s,
-
-    transform .5s ease .2s;
+        opacity .55s cubic-bezier(.22,1,.36,1) .18s,
+        transform .55s cubic-bezier(.22,1,.36,1) .18s;
 
 }
+
+/* Desktop appears */
 
 .shell.startup .desktop{
 
@@ -170,7 +164,7 @@ transform:none;
 
 }
 
-/* Ambient glow */
+/* Ambient Glow */
 
 .desktop::before{
 
@@ -186,21 +180,41 @@ transform:none;
 
     background:
 
-    radial-gradient(
+        radial-gradient(
 
-        circle,
+            circle,
 
-        rgba(191,141,99,.12),
+            rgba(191,141,99,.13),
 
-        transparent 70%
+            transparent 70%
 
-    );
+        );
 
     filter:blur(120px);
 
+    opacity:0;
+
+    transform:scale(.92);
+
+    transition:
+
+        opacity .8s ease .15s,
+
+        transform .8s ease .15s;
+
 }
 
-/* ---------- Placeholder ---------- */
+.shell.startup .desktop::before{
+
+    opacity:1;
+
+    transform:scale(1);
+
+}
+
+/* =======================================================
+   PLACEHOLDER
+======================================================= */
 
 .desktop h2{
 
@@ -212,23 +226,45 @@ transform:none;
 
     user-select:none;
 
+    opacity:0;
+
+    transform:
+
+        translateY(14px);
+
+    transition:
+
+        opacity .6s ease .28s,
+
+        transform .6s ease .28s;
+
 }
 
-/* ---------- Status ---------- */
+.shell.startup .desktop h2{
+
+    opacity:1;
+
+    transform:none;
+
+}
+
+/* =======================================================
+   STATUS BAR
+======================================================= */
 
 .statusbar{
 
     opacity:0;
 
     transform:
-    translateY(18px)
-    scale(.985);
+        translateY(24px)
+        scale(.985);
 
     transition:
 
-    opacity .45s ease .12s,
+        opacity .45s cubic-bezier(.22,1,.36,1) .12s,
 
-    transform .45s ease .12s;
+        transform .45s cubic-bezier(.22,1,.36,1) .12s;
 
     width:min(900px,90%);
 
@@ -262,8 +298,8 @@ transform:none;
 
 .shell.startup .statusbar{
 
-opacity:1;
+    opacity:1;
 
-transform:none;
+    transform:none;
 
 }

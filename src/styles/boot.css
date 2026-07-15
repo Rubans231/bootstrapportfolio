@@ -11,9 +11,8 @@
   background: #080706;
 
   transition:
-    opacity .22s ease,
-    transform .22s ease;
-    /* visibility .18s ease; */
+    opacity .28s ease,
+    filter .28s ease;
 
   display: flex;
   flex-direction: column;
@@ -35,7 +34,7 @@
 
     opacity:0;
 
-    transform:scale(1.01);
+    filter:blur(2px);
 
     pointer-events:none;
 

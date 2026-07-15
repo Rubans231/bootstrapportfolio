@@ -14,6 +14,18 @@
 
 .topbar{
 
+    opacity:0;
+
+    transform:
+    translateY(-18px)
+    scale(.985);
+
+    transition:
+
+    opacity .45s ease,
+
+    transform .45s ease;
+
     width:min(1200px,92%);
 
     margin:18px auto 0;
@@ -37,6 +49,14 @@
     box-shadow:var(--shadow);
 
     backdrop-filter:blur(18px);
+
+}
+
+.shell.startup .topbar{
+
+opacity:1;
+
+transform:none;
 
 }
 
@@ -126,6 +146,28 @@
 
     overflow:hidden;
 
+    opacity:0;
+
+    transform:
+
+    translateY(8px)
+
+    scale(.992);
+
+    transition:
+
+    opacity .5s ease .2s,
+
+    transform .5s ease .2s;
+
+}
+
+.shell.startup .desktop{
+
+    opacity:1;
+
+    transform:none;
+
 }
 
 /* Ambient glow */
@@ -176,6 +218,18 @@
 
 .statusbar{
 
+    opacity:0;
+
+    transform:
+    translateY(18px)
+    scale(.985);
+
+    transition:
+
+    opacity .45s ease .12s,
+
+    transform .45s ease .12s;
+
     width:min(900px,90%);
 
     margin:0 auto 18px;
@@ -203,5 +257,13 @@
     color:var(--muted);
 
     font-size:.82rem;
+
+}
+
+.shell.startup .statusbar{
+
+opacity:1;
+
+transform:none;
 
 }

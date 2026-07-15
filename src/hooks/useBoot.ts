@@ -2,24 +2,28 @@ import { useEffect, useState } from "react";
 
 export function useBoot() {
   const [finished, setFinished] = useState(false);
+
+  // boot overlay fading
+  const [fading, setFading] = useState(false);
+
+  // desktop animations enabled
   const [desktopReady, setDesktopReady] = useState(false);
 
   const skip = () => {
-    setFinished(true);
-  };
+    if (finished || fading) return;
 
-  useEffect(() => {
-    if (!finished) return;
+    setFading(true);
 
-    const timer = setTimeout(() => {
+    // allow overlay to fade first
+    setTimeout(() => {
+      setFinished(true);
       setDesktopReady(true);
-    }, 120);
-
-    return () => clearTimeout(timer);
-  }, [finished]);
+    }, 220);
+  };
 
   return {
     finished,
+    fading,
     desktopReady,
     skip,
   };

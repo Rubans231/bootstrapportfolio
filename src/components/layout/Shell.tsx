@@ -6,7 +6,9 @@ interface ShellProps {
   startup: boolean;
 }
 
-export default function Shell({ startup }: ShellProps) {
+export default function Shell({
+  startup,
+}: ShellProps) {
   return (
     <div className={`shell ${startup ? "startup" : ""}`}>
       <TopBar />

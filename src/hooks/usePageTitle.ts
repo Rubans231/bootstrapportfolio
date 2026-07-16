@@ -1,17 +1,19 @@
 import { useLocation } from "react-router-dom";
+import { useLang } from "../lib/i18n";
 
 export default function usePageTitle() {
   const { pathname } = useLocation();
+  const { t } = useLang();
 
   switch (pathname) {
     case "/":
-      return "Knowledge Base";
+      return t("title.knowledge");
 
     case "/projects":
-      return "Projects";
+      return t("title.projects");
 
     case "/about":
-      return "About";
+      return t("title.about");
 
     default:
       return "Portfolio";

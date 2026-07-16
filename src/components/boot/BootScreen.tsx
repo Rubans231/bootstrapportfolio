@@ -160,7 +160,7 @@ export default function BootScreen({
         className={`boot-screen ${fading ? "fade" : ""}`}
         onClick={onSkip}
       >
-      <h1>NaranderOS 3.0</h1>
+      <h1>PortfolioOS v1.2</h1>
 
       <small>Linux 6.16.0-arch1</small>
 

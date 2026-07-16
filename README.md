@@ -1,4 +1,4 @@
-# NaranderOS — portfolio
+# Personal portfolio
 
 Not a traditional portfolio. Three workspaces: a Knowledge Base (a real graph of my
 ZenNotes vault), Projects (each one its own tiled-terminal workspace, pulling live

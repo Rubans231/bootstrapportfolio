@@ -1,0 +1,212 @@
+/* ---------------- Parallax background ---------------- */
+
+.about-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.about-bg-layer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 70vh;
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.25s ease-out;
+}
+
+.about-bg-back {
+  transform: translate(-30%, -60%);
+  opacity: 0.1;
+  filter: blur(3px) saturate(0.7);
+}
+
+.about-bg-front {
+  transform: translate(-70%, -40%);
+  opacity: 0.14;
+  filter: blur(1.5px) saturate(0.8);
+}
+
+/* ---------------- Page shell ---------------- */
+
+.about-page {
+  position: relative;
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 90px 24px 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ---------------- Hero ---------------- */
+
+.about-hero {
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 8px;
+}
+
+.about-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--border-light);
+  margin: 0 0 10px;
+}
+
+.about-hero h1 {
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  margin: 0 0 10px;
+  color: var(--text);
+}
+
+.about-role {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin: 0 0 18px;
+}
+
+.about-lede {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--muted);
+  max-width: 42rem;
+  margin: 0 0 18px;
+}
+
+.quote-rotator {
+  font-family: var(--font-mono);
+  font-style: italic;
+  font-size: 0.8rem;
+  color: var(--border-light);
+  min-height: 2.4em;
+  margin: 0;
+  animation: fadeUp 0.5s ease;
+}
+
+/* ---------------- Sections ---------------- */
+
+.about-section {
+  padding: 26px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.about-section:last-of-type {
+  border-bottom: none;
+}
+
+.about-section h2 {
+  font-size: 1.05rem;
+  color: var(--accent);
+  margin: 0 0 12px;
+}
+
+.about-section p {
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: var(--muted);
+  max-width: 46rem;
+}
+
+.about-section a {
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-color: var(--border-light);
+  text-underline-offset: 3px;
+}
+
+.about-section a:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
+/* ---------------- Off the clock ---------------- */
+
+.offclock-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin: 0 0 16px;
+}
+
+.offclock-grid dt {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--border-light);
+  margin-bottom: 6px;
+}
+
+.offclock-grid dd {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.offclock-note {
+  font-size: 0.82rem;
+  font-style: italic;
+  color: var(--border-light);
+  max-width: 42rem;
+}
+
+/* ---------------- Desk photo ---------------- */
+
+.about-photo {
+  margin: 4px 0 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.about-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 420px;
+  object-fit: cover;
+}
+
+.about-photo figcaption {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--border-light);
+  padding: 10px 14px;
+}
+
+/* ---------------- Contact ---------------- */
+
+.about-contact ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 28px;
+}
+
+.about-contact a {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+
+@media (max-width: 640px) {
+  .offclock-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .about-bg-layer {
+    height: 50vh;
+  }
+}

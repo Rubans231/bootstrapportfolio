@@ -1,0 +1,300 @@
+.projects-page {
+  position: relative;
+  width: 100%;
+  min-height: calc(100vh - 140px);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------------- Tiled terminal background ---------------- */
+
+.project-workspace {
+  position: relative;
+  flex: 1;
+  min-height: 560px;
+  display: flex;
+  align-items: center;
+}
+
+.tiled-terminals {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 2px;
+  background: var(--border);
+  overflow: hidden;
+  z-index: 0;
+}
+
+.tile-hero {
+  grid-row: 1 / 3;
+}
+
+.terminal-tile {
+  background: #0a0807;
+  padding: 14px 16px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  line-height: 1.6;
+  color: rgba(191, 141, 99, 0.5);
+  overflow: hidden;
+  white-space: pre;
+}
+
+.terminal-tile p {
+  margin: 0;
+  color: inherit;
+}
+
+.terminal-cursor {
+  animation: blink 1s step-end infinite;
+  color: var(--accent);
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* dim the tiled terminals so the foreground panel stays readable */
+.tiled-terminals::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    120% 100% at 8% 50%,
+    rgba(11, 9, 8, 0.94) 0%,
+    rgba(11, 9, 8, 0.72) 45%,
+    rgba(11, 9, 8, 0.4) 100%
+  );
+  pointer-events: none;
+}
+
+/* ---------------- Foreground panel ---------------- */
+
+.project-workspace-panel {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+  margin-left: 6rem;
+  padding: 2rem 2.25rem;
+  border-radius: var(--radius-lg);
+  background: var(--glass);
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.project-workspace-header h1 {
+  font-size: 1.7rem;
+  color: var(--text);
+  margin: 0 0 8px;
+  line-height: 1.25;
+}
+
+.project-workspace-tagline {
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin: 0 0 14px;
+}
+
+.project-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--border-light);
+  margin-bottom: 4px;
+}
+
+.project-meta-loading {
+  font-style: italic;
+}
+
+.project-tech-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0 20px;
+}
+
+.stack-pill {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 3px 8px;
+}
+
+.project-body {
+  font-size: 0.88rem;
+}
+
+.project-description {
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.project-note {
+  margin-top: 12px;
+  padding-left: 12px;
+  border-left: 2px solid var(--accent-soft);
+  font-size: 0.78rem;
+  font-style: italic;
+  color: var(--border-light);
+}
+
+.project-readme-fallback-note {
+  font-size: 0.72rem;
+  color: var(--border-light);
+  font-style: italic;
+  margin-bottom: 10px;
+}
+
+.project-links {
+  display: flex;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.project-link {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--accent);
+  border: 1px solid var(--accent-soft);
+  border-radius: var(--radius-sm);
+  padding: 6px 14px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.project-link:hover {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+/* ---------------- README markdown ---------------- */
+
+.readme-view {
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+
+.readme-view h1,
+.readme-view h2,
+.readme-view h3 {
+  color: var(--text);
+  font-size: 1.05rem;
+  margin: 1.2em 0 0.5em;
+}
+
+.readme-view p {
+  color: var(--muted);
+}
+
+.readme-view code {
+  background: var(--surface);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 0.82em;
+}
+
+.readme-view pre {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  overflow-x: auto;
+}
+
+.readme-view pre code {
+  background: none;
+  padding: 0;
+}
+
+.readme-view table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.8rem;
+}
+
+.readme-view th,
+.readme-view td {
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  text-align: left;
+}
+
+.readme-view img {
+  max-width: 100%;
+  border-radius: var(--radius-sm);
+}
+
+.readme-view a {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.readme-view ul,
+.readme-view ol {
+  padding-left: 1.4em;
+}
+
+/* ---------------- Workspace tab strip ---------------- */
+
+.workspace-strip {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 0;
+}
+
+.workspace-strip-tab {
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  transition: all 0.2s ease;
+}
+
+.workspace-strip-tab:hover {
+  border-color: var(--accent-soft);
+  color: var(--text);
+}
+
+.workspace-strip-tab.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+  font-weight: 700;
+}
+
+@media (max-width: 860px) {
+  .tiled-terminals {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+  }
+  .tile-hero {
+    grid-row: auto;
+  }
+  .project-workspace-panel {
+    margin: 0 1.25rem;
+    max-width: none;
+    max-height: none;
+  }
+  .project-workspace {
+    padding: 2rem 0;
+  }
+}

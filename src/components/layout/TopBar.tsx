@@ -1,9 +1,11 @@
 import { NavLink } from "react-router-dom";
 import WaybarModule from "../ui/WaybarModule";
 import usePageTitle from "../../hooks/usePageTitle";
+import { useLang } from "../../lib/i18n";
 
 export default function TopBar() {
   const title = usePageTitle();
+  const { lang, setLang, t } = useLang();
 
   return (
     <header className="topbar">
@@ -17,18 +19,30 @@ export default function TopBar() {
       <WaybarModule variant="center">
 
         <nav className="nav">
-          <NavLink to="/">Knowledge</NavLink>
-          <NavLink to="/projects">Projects</NavLink>
-          <NavLink to="/about">About</NavLink>
+          <NavLink to="/" end>{t("nav.knowledge")}</NavLink>
+          <NavLink to="/projects">{t("nav.projects")}</NavLink>
+          <NavLink to="/about">{t("nav.about")}</NavLink>
         </nav>
 
       </WaybarModule>
 
       <WaybarModule variant="right">
 
-        <button className="lang active">EN</button>
+        <button
+          className={`lang ${lang === "en" ? "active" : ""}`}
+          onClick={() => setLang("en")}
+          aria-pressed={lang === "en"}
+        >
+          EN
+        </button>
 
-        <button className="lang">日本語</button>
+        <button
+          className={`lang ${lang === "ja" ? "active" : ""}`}
+          onClick={() => setLang("ja")}
+          aria-pressed={lang === "ja"}
+        >
+          日本語
+        </button>
 
       </WaybarModule>
 

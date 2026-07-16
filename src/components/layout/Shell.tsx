@@ -1,15 +1,16 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import TopBar from "./TopBar";
 import StatusBar from "./StatusBar";
 
 interface Props {
     children: ReactNode;
+    startup: boolean;
 }
 
-export default function Shell({ children }: Props) {
+export default function Shell({ children, startup }: Props) {
     return (
-        <div className="shell startup">
+        <div className={`shell ${startup ? "startup" : ""}`}>
             <TopBar />
 
             <main className="desktop">

@@ -262,15 +262,9 @@
 
     flex:1;
 
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
+    display:block;
 
     position:relative;
-
-    overflow:hidden;
 
     opacity:0;
 
@@ -304,6 +298,12 @@
 
     position:absolute;
 
+    top:-120px;
+
+    left:50%;
+
+    transform:translateX(-50%) scale(.92);
+
     width:900px;
 
     height:900px;
@@ -326,7 +326,7 @@
 
     opacity:0;
 
-    transform:scale(.92);
+    z-index:0;
 
     transition:
 
@@ -340,43 +340,7 @@
 
     opacity:1;
 
-    transform:scale(1);
-
-}
-
-/* =======================================================
-   PLACEHOLDER
-======================================================= */
-
-.desktop h2{
-
-    font-size:6rem;
-
-    letter-spacing:.45em;
-
-    color:rgba(255,255,255,.025);
-
-    user-select:none;
-
-    opacity:0;
-
-    transform:
-
-        translateY(14px);
-
-    transition:
-
-        opacity .6s ease .28s,
-
-        transform .6s ease .28s;
-
-}
-
-.shell.startup .desktop h2{
-
-    opacity:1;
-
-    transform:none;
+    transform:translateX(-50%) scale(1);
 
 }
 
@@ -384,25 +348,83 @@
    STATUS BAR
 ======================================================= */
 
-.statusbar a{
+.statusbar{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:6px;
+
+    padding:14px 0 22px;
+
+}
+
+.workspace-tab{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:6px 14px;
 
     color:var(--muted);
+
+    border-radius:8px;
+
+    font-size:.82rem;
 
     transition:.2s;
 
 }
 
-.statusbar a:hover{
+.workspace-tab:hover{
 
     color:var(--text);
 
 }
 
-.statusbar a.active{
+.workspace-tab.active{
 
     color:var(--accent);
 
-    font-weight:600;
+    background:var(--surface);
+
+}
+
+.workspace-n{
+
+    font-family:var(--font-mono);
+
+    font-size:.72rem;
+
+    color:var(--border-light);
+
+    border:1px solid var(--border);
+
+    border-radius:4px;
+
+    width:16px;
+
+    height:16px;
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+.workspace-tab.active .workspace-n{
+
+    color:var(--accent);
+
+    border-color:var(--accent-soft);
 
 }
 
@@ -419,5 +441,15 @@
     margin:0;
 
     white-space:nowrap;
+
+}
+
+.route-loading{
+
+    padding:120px 24px;
+    text-align:center;
+    font-family:var(--font-mono);
+    font-size:.8rem;
+    color:var(--border-light);
 
 }

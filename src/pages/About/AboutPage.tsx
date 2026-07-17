@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useLang } from "../../lib/i18n";
 import QuoteRotator from "../../components/QuoteRotator";
 import AboutParallaxBackground from "../../components/about/AboutParallaxBackground";
+import RMPCBackground from "../../components/about/RMPCBackground";
 import pcSetup from "../../assets/PC_setup.jpg";
 
 import "../../styles/about.css";
@@ -12,6 +13,7 @@ export default function AboutPage() {
   return (
     <section className="about-page">
       <AboutParallaxBackground />
+      <RMPCBackground />
 
       <header className="about-hero">
         <p className="about-eyebrow">whoami</p>

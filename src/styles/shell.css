@@ -34,17 +34,21 @@
 
 .waybar-module{
 
+    --module-transform:none;
+
     display:flex;
 
     align-items:center;
 
     justify-content:center;
 
-    gap:14px;
+    gap:var(--waybar-gap);
 
-    min-height:48px;
+    height:var(--waybar-height);
 
-    padding:2px;
+    padding:0 var(--waybar-padding-x);
+
+    box-sizing:border-box;
 
     border:2px solid var(--border);
 
@@ -52,68 +56,88 @@
 
     backdrop-filter:blur(18px);
 
-    transition:
+    transform:var(--module-transform) scaleY(.35);
 
-        all .30s cubic-bezier(.55,-0.68,.48,1.682);
+    transform-origin:top;
+
+    transition:
+        transform .45s cubic-bezier(.22,1,.36,1),
+        opacity .45s ease,
+        background .25s ease,
+        border-color .25s ease;
 
 }
+
+/* Startup animation */
+
+.shell.startup .waybar-module{
+
+    transform:var(--module-transform) scaleY(1);
+
+}
+
+/* ---------------- Left ---------------- */
 
 .waybar-module.left{
 
     position:absolute;
-
     left:var(--shell-margin);
 
     top:0;
-
-    padding-inline:18px;
-
     border-radius:0 0 36px 0;
 
+    width:fit-content;
+    max-width:40vw;
+    white-space:nowrap;
+
 }
+
+/* ---------------- Center ---------------- */
 
 .waybar-module.center{
 
     position:absolute;
 
     left:50%;
-
     top:0;
 
-    transform:translateX(-50%);
-
     width:min(560px,60vw);
-
     justify-content:center;
 
     border-radius:60px 0 60px 0;
+    --module-transform:translateX(-50%);
 
 }
+
+/* ---------------- Right ---------------- */
 
 .waybar-module.right{
 
     position:absolute;
 
     right:var(--shell-margin);
-
     top:0;
 
-    padding-inline:18px;
-
     border-radius:36px 0 0 0;
+    width:fit-content;
+
+    white-space:nowrap;
 
 }
 
 .lang{
 
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    height:100%;
     color:var(--muted);
 
-    padding:5px 10px;
-
+    padding:0 10px;
     border-radius:9px;
 
     transition:
-
         all .30s cubic-bezier(.55,-0.68,.48,1.682);
 
 }
@@ -128,12 +152,17 @@
 
 .page-title{
 
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    height:100%;
     color:var(--accent);
 
-    letter-spacing:.15em;
-
+    font-size:.95rem;
     font-weight:700;
 
+    letter-spacing:.15em;
     white-space:nowrap;
 
 }
@@ -163,15 +192,12 @@
 .nav{
 
     display:flex;
-
     align-items:stretch;
 
     justify-content:center;
-
-    gap:8px;
+    gap:6px;
 
     width:100%;
-
     height:100%;
 
 }
@@ -179,31 +205,26 @@
 .nav a{
 
     display:flex;
-
     align-items:center;
 
     justify-content:center;
-
-    min-height:36px;
+    height:100%;
 
     padding:0 12px;
+    border-radius:9px;
 
     color:var(--muted);
 
-    border-radius:9px;
-
+    text-decoration:none;
     position:relative;
 
     overflow:hidden;
-
     z-index:1;
 
     transition:
-
         all .30s cubic-bezier(.55,-0.68,.48,1.682);
 
 }
-
 /* .nav a{ */
 /**/
 /*     position:relative; */
@@ -266,29 +287,9 @@
 
     position:relative;
 
-    opacity:0;
-
-    transform:
-        translateY(10px)
-        scale(.992);
-
-    transition:
-        opacity .55s cubic-bezier(.22,1,.36,1) .18s,
-        transform .55s cubic-bezier(.22,1,.36,1) .18s;
-
 }
 
-/* Desktop appears */
-
-.shell.startup .desktop{
-
-    opacity:1;
-
-    transform:none;
-
-}
-
-/* Ambient Glow */
+/* Ambient Glow — present immediately, no reveal transition */
 
 .desktop::before{
 
@@ -302,7 +303,7 @@
 
     left:50%;
 
-    transform:translateX(-50%) scale(.92);
+    transform:translateX(-50%);
 
     width:900px;
 
@@ -324,23 +325,7 @@
 
     filter:blur(120px);
 
-    opacity:0;
-
     z-index:0;
-
-    transition:
-
-        opacity .8s ease .15s,
-
-        transform .8s ease .15s;
-
-}
-
-.shell.startup .desktop::before{
-
-    opacity:1;
-
-    transform:translateX(-50%) scale(1);
 
 }
 
@@ -359,6 +344,30 @@
     gap:6px;
 
     padding:14px 0 22px;
+
+    opacity:0;
+
+    transform:scaleY(.35);
+
+    transform-origin:bottom;
+
+    transition:
+
+        all .30s cubic-bezier(.55,-0.68,.48,1.682);
+
+}
+
+.shell.startup .statusbar{
+
+    opacity:1;
+
+    transform:scaleY(1);
+
+    transition:
+
+        opacity .16s steps(2,end),
+
+        transform .22s cubic-bezier(.34,1.56,.64,1);
 
 }
 

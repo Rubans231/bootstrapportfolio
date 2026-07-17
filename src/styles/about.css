@@ -6,28 +6,51 @@
   z-index: -1;
   overflow: hidden;
   pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
 }
 
-.about-bg-layer {
-  position: absolute;
-  top: 50%;
+.about-bg-fastfetch {
+  position: relative;
   left: 50%;
-  height: 70vh;
-  width: auto;
-  object-fit: contain;
+  transform: translate(-50%, 0);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: var(--accent-soft);
+  opacity: 0.14;
+  white-space: pre;
+  margin: 0;
   transition: transform 0.25s ease-out;
 }
 
-.about-bg-back {
-  transform: translate(-30%, -60%);
-  opacity: 0.1;
-  filter: blur(3px) saturate(0.7);
+.about-bg-layer {
+  position: relative;
+  height: 32vh;
+  min-height: 220px;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.12;
+  filter: blur(1.5px) saturate(0.75);
+  transition: transform 0.25s ease-out;
 }
 
-.about-bg-front {
-  transform: translate(-70%, -40%);
-  opacity: 0.14;
-  filter: blur(1.5px) saturate(0.8);
+.about-bg-left {
+  transform: none;
+}
+
+.about-bg-right {
+  transform: scaleX(-1);
+}
+
+.about-bg-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 100px;
 }
 
 /* ---------------- Page shell ---------------- */

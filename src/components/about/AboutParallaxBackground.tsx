@@ -3,11 +3,10 @@ import leftFace from "../../assets/left-faceplate.png";
 import rightFace from "../../assets/right-faceplate.png";
 
 /**
- * Subtle whole-viewport mouse-parallax background for the About page, built
- * from real photos of my own IEMs rather than a stock image. Deliberately
- * dim and out of focus — atmosphere, not a product shot. Listens on
- * `window` (rather than its own pointer-events) so it stays purely
- * decorative and never intercepts clicks/selection on the real content.
+ * About page background: a fastfetch-style text block with the two ZERO:RED
+ * shells sitting apart, below it, center-screen — not the earlier
+ * overlapping two-layer version. Everything here is decorative and dim;
+ * text content always sits on top of it.
  */
 export default function AboutParallaxBackground() {
   const [offset, setOffset] = useState({ x: 0, y: 0 });
@@ -25,18 +24,34 @@ export default function AboutParallaxBackground() {
 
   return (
     <div className="about-bg" aria-hidden="true">
-      <img
-        src={rightFace}
-        alt=""
-        className="about-bg-layer about-bg-back"
-        style={{ transform: `translate(${offset.x * -16}px, ${offset.y * -12}px)` }}
-      />
-      <img
-        src={leftFace}
-        alt=""
-        className="about-bg-layer about-bg-front"
-        style={{ transform: `translate(${offset.x * 26}px, ${offset.y * 18}px)` }}
-      />
+      <pre
+        className="about-bg-fastfetch"
+        style={{ transform: `translate(-50%, ${offset.y * -8}px)` }}
+      >
+{`narander@rubans
+────────────────
+OS       NaranderOS 3.0
+WM       Hyprland (Wayland)
+Shell    zsh
+Term     kitty
+Theme    Tokyonight-Dark
+IEM      ZERO:RED`}
+      </pre>
+
+      <div className="about-bg-row">
+        <img
+          src={leftFace}
+          alt=""
+          className="about-bg-layer about-bg-left"
+          style={{ transform: `translate(${offset.x * -18}px, ${offset.y * 14}px)` }}
+        />
+        <img
+          src={rightFace}
+          alt=""
+          className="about-bg-layer about-bg-right"
+          style={{ transform: `translate(${offset.x * 18}px, ${offset.y * 14}px) scaleX(-1)` }}
+        />
+      </div>
     </div>
   );
 }

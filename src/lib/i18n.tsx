@@ -14,16 +14,9 @@ const EN: Dict = {
   "title.projects": "Projects",
   "title.about": "About",
 
-  "vault.heading": "Knowledge Base",
-  "vault.intro1": "Welcome to my second brain.",
-  "vault.intro2":
-    "This graph is generated from my real ZenNotes vault — titles, tags, and the links between them. Nothing here is staged.",
-  "vault.cta": "View Projects →",
   "vault.hide": "hide panel",
   "vault.show": "show panel",
-  "vault.stats.notes": "notes",
-  "vault.stats.tags": "tags",
-  "vault.stats.links": "links",
+  "vault.error": "Couldn't reach GitHub to load the notes vault right now — try refreshing in a bit.",
 
   "projects.workspace": "workspace",
   "projects.viewRepo": "view repo",
@@ -51,16 +44,9 @@ const JA: Dict = {
   "title.projects": "プロジェクト",
   "title.about": "自己紹介",
 
-  "vault.heading": "ナレッジベース",
-  "vault.intro1": "第二の脳へようこそ。",
-  "vault.intro2":
-    "このグラフは実際のZenNotesボルトから生成されています — タイトル、タグ、そしてそれらのリンク。演出は一切ありません。",
-  "vault.cta": "プロジェクトを見る →",
   "vault.hide": "パネルを隠す",
   "vault.show": "パネルを表示",
-  "vault.stats.notes": "ノート",
-  "vault.stats.tags": "タグ",
-  "vault.stats.links": "リンク",
+  "vault.error": "GitHubからボルトを読み込めませんでした — しばらくして再読み込みしてください。",
 
   "projects.workspace": "ワークスペース",
   "projects.viewRepo": "リポジトリを見る",

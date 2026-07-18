@@ -1,5 +1,7 @@
 import { cacheGet, cacheSet } from "./cache";
 
+export const WELCOME_PATH = "__welcome__";
+
 export const VAULT_OWNER = "Rubans231";
 export const VAULT_REPO = "Personal-Notes";
 export const VAULT_BRANCH = "main";

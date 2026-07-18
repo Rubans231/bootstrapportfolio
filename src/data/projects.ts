@@ -80,7 +80,7 @@ export const projectsData: Project[] = [
   },
   {
     id: "this-site",
-    title: "NaranderOS (this site)",
+    title: "Portfolio (this site)",
     tagline: "A rice you can visit",
     description:
       "You're standing in it. A boot sequence, a Hyprland-style Waybar shell, a real force-directed graph pulled straight from my ZenNotes vault, and projects rendered live from GitHub instead of hardcoded copy.",

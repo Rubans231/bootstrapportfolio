@@ -37,6 +37,39 @@ export async function fetchRepoMeta(owner: string, repo: string): Promise<RepoMe
   }
 }
 
+/**
+ * Optional per-project flavor text for the tiled terminal background. If a
+ * project's own repo has a `.portfolio-log` file at its root (plain text,
+ * one line per entry), those real lines are used instead of the generated
+ * placeholder git-log lines. Absent file = silently falls back to the
+ * generated content, so this is entirely opt-in.
+ */
+export async function fetchProjectLog(owner: string, repo: string): Promise<string[] | null> {
+  const key = `gh:portfolio-log:${owner}/${repo}`;
+  const cached = cacheGet<string[]>(key);
+  if (cached) return cached;
+
+  for (const branch of ["main", "master"]) {
+    try {
+      const res = await fetch(
+        `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/.portfolio-log`
+      );
+      if (!res.ok) continue;
+      const text = await res.text();
+      const lines = text
+        .split("\n")
+        .map((l) => l.trim())
+        .filter(Boolean);
+      if (lines.length === 0) continue;
+      cacheSet(key, lines);
+      return lines;
+    } catch {
+      /* try next branch */
+    }
+  }
+  return null;
+}
+
 export async function fetchReadme(
   owner: string,
   repo: string,

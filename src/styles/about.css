@@ -98,6 +98,30 @@
   gap: 100px;
 }
 
+.live-log-feed {
+  position: fixed;
+  top: 6rem;
+  right: 3rem;
+  z-index: -1;
+  width: 360px;
+  max-height: 260px;
+  overflow: hidden;
+  pointer-events: none;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  line-height: 1.6;
+  color: var(--accent-soft);
+  opacity: 0.16;
+  text-align: right;
+  transition: transform 0.25s ease-out;
+  mask-image: linear-gradient(to bottom, transparent, black 25%);
+}
+
+.live-log-feed p {
+  margin: 0;
+  white-space: nowrap;
+}
+
 /* ---------------- Page shell ---------------- */
 
 .about-page {
@@ -282,22 +306,28 @@
 /* ---------------- rmpc ---------------- */
 
 .rmpc{
-position:absolute;
 
-bottom:60px;
-left:70px;
+position:fixed;
 
-width:820px;
+bottom:40px;
+left:6rem;
+
+width:560px;
 
 opacity:.12;
 
-font-family:FantasqueSansMNFM,monospace;
+font-family:var(--font-mono),monospace;
 
 pointer-events:none;
 
 user-select:none;
 
 color:#d19a66;
+
+z-index:-1;
+
+transition:transform .25s ease-out;
+
 }
 
 .header{
@@ -322,9 +352,9 @@ gap:18px;
 
 .cover{
 
-width:160px;
+width:100px;
 
-height:160px;
+height:100px;
 
 object-fit:cover;
 

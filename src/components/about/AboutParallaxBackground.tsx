@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
 import leftFace from "../../assets/left-faceplate.png";
 import rightFace from "../../assets/right-faceplate.png";
+import { useMouseParallax } from "../../hooks/useMouseParallax";
 
 /**
  * About page background: a fastfetch-style text block with the two ZERO:RED
@@ -9,18 +9,7 @@ import rightFace from "../../assets/right-faceplate.png";
  * text content always sits on top of it.
  */
 export default function AboutParallaxBackground() {
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    function handleMove(e: MouseEvent) {
-      setOffset({
-        x: e.clientX / window.innerWidth - 0.5,
-        y: e.clientY / window.innerHeight - 0.5,
-      });
-    }
-    window.addEventListener("mousemove", handleMove);
-    return () => window.removeEventListener("mousemove", handleMove);
-  }, []);
+  const { offset } = useMouseParallax();
 
   return (
     <div className="about-bg" aria-hidden="true">

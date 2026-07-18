@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import GraphCanvas from "../../components/knowledge/GraphCanvas";
 import VaultExplorer from "../../components/knowledge/VaultExplorer";
-import { fetchVault } from "../../lib/vault";
+import { fetchVault, WELCOME_PATH } from "../../lib/vault";
 import type { VaultData } from "../../lib/vault";
 import { useLang } from "../../lib/i18n";
 
@@ -10,7 +10,7 @@ import "../../styles/knowledge.css";
 export default function KnowledgePage() {
     const [vault, setVault] = useState<VaultData | null>(null);
     const [failed, setFailed] = useState(false);
-    const [activePath, setActivePath] = useState<string | null>(null);
+    const [activePath, setActivePath] = useState<string | null>(WELCOME_PATH);
     const [panelVisible, setPanelVisible] = useState(true);
     const { t } = useLang();
 
@@ -23,7 +23,6 @@ export default function KnowledgePage() {
                 return;
             }
             setVault(data);
-            setActivePath(data.defaultPath);
         });
         return () => {
             cancelled = true;

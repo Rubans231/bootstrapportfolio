@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
-import { fetchNoteContent } from "../../lib/vault";
+import { fetchNoteContent, WELCOME_PATH } from "../../lib/vault";
+import WelcomeNote from "./WelcomeNote";
 
 interface Props {
   path: string | null;
@@ -25,7 +26,7 @@ export default function NoteReader({ path, titleToPath, onNavigate }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!path) {
+    if (!path || path === WELCOME_PATH) {
       setContent(null);
       return;
     }
@@ -66,6 +67,10 @@ export default function NoteReader({ path, titleToPath, onNavigate }: Props) {
     el.addEventListener("click", handleClick);
     return () => el.removeEventListener("click", handleClick);
   }, [titleToPath, onNavigate]);
+
+  if (path === WELCOME_PATH) {
+    return <WelcomeNote />;
+  }
 
   if (!path) {
     return <div className="note-reader note-reader-empty">select a note from the tree</div>;

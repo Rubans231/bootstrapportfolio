@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 
 const QUOTES = [
-  "Life keeps forcing choices.",
+  "Life keeps forcing cruel choices.",
   "Work life is... complicated.",
-  "Life as an engineer isn't always so nice, but my themes and projects sure are — so I can cope with that satisfaction.",
+  "Life as an engineer can be hectic, but the thought of an end product pushes me to keep going.",
+  "When life gets hard and I question my value, I just stare at things I made and think to myself 'damn, I really made that'",
 ];
 
 export default function QuoteRotator() {

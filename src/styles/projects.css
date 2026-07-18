@@ -83,7 +83,7 @@
   padding: 2rem 2.25rem;
   border-radius: var(--radius-lg);
   background: var(--glass);
-  backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--panel-blur));
   border: 1px solid var(--border);
   box-shadow: var(--shadow-soft);
   max-height: 70vh;

@@ -1,3 +1,5 @@
+import { cacheGet, cacheSet } from "./cache";
+
 export interface RepoMeta {
   name: string;
   description: string | null;
@@ -9,35 +11,13 @@ export interface RepoMeta {
   homepage: string | null;
 }
 
-const TTL_MS = 60 * 60 * 1000; // 1 hour
-
-function cacheGet<T>(key: string): T | null {
-  try {
-    const raw = window.sessionStorage.getItem(key);
-    if (!raw) return null;
-    const { at, data } = JSON.parse(raw);
-    if (Date.now() - at > TTL_MS) return null;
-    return data as T;
-  } catch {
-    return null;
-  }
-}
-
-function cacheSet(key: string, data: unknown) {
-  try {
-    window.sessionStorage.setItem(key, JSON.stringify({ at: Date.now(), data }));
-  } catch {
-    /* sessionStorage full or unavailable — fine, just skip caching */
-  }
-}
-
 /**
  * NOTE on "pinned repos": GitHub's REST API has no public concept of pinned
  * repos — that's only exposed via the GraphQL API with an auth token, which
- * can't be safely embedded in client-side code. So which repos appear here
- * is a small curated list (see data/projects.ts), while everything *about*
- * each repo (stars, language, README, last push) is fetched live and cached
- * for an hour per session.
+ * can't be safely embedded in client-side code. So which repos appear on the
+ * Projects page is a small curated list (see data/projects.ts), while
+ * everything *about* each repo (stars, language, README, last push) is
+ * fetched live and cached for an hour per session.
  */
 export async function fetchRepoMeta(owner: string, repo: string): Promise<RepoMeta | null> {
   const key = `gh:meta:${owner}/${repo}`;
@@ -55,6 +35,39 @@ export async function fetchRepoMeta(owner: string, repo: string): Promise<RepoMe
   } catch {
     return null;
   }
+}
+
+/**
+ * Optional per-project flavor text for the tiled terminal background. If a
+ * project's own repo has a `.portfolio-log` file at its root (plain text,
+ * one line per entry), those real lines are used instead of the generated
+ * placeholder git-log lines. Absent file = silently falls back to the
+ * generated content, so this is entirely opt-in.
+ */
+export async function fetchProjectLog(owner: string, repo: string): Promise<string[] | null> {
+  const key = `gh:portfolio-log:${owner}/${repo}`;
+  const cached = cacheGet<string[]>(key);
+  if (cached) return cached;
+
+  for (const branch of ["main", "master"]) {
+    try {
+      const res = await fetch(
+        `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/.portfolio-log`
+      );
+      if (!res.ok) continue;
+      const text = await res.text();
+      const lines = text
+        .split("\n")
+        .map((l) => l.trim())
+        .filter(Boolean);
+      if (lines.length === 0) continue;
+      cacheSet(key, lines);
+      return lines;
+    } catch {
+      /* try next branch */
+    }
+  }
+  return null;
 }
 
 export async function fetchReadme(

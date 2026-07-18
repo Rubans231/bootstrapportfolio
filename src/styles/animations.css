@@ -22,7 +22,7 @@
 
 .glass{
 
-    backdrop-filter:blur(var(--glass-blur));
+    backdrop-filter:blur(var(--panel-blur));
 
     background:var(--surface);
 

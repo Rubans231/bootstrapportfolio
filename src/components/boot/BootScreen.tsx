@@ -11,7 +11,7 @@ const bootLines: BootEntry[] = [
   { text: "Parsing Personal-Notes vault" },
   { text: "Indexing Markdown graph" },
   { text: "Connecting GitHub repositories" },
-  { text: "Loading Japanese workspace", pause: 650 },
+  { text: "Loading workspaces", pause: 650 },
   { text: "Syncing configs" },
   { text: "Starting session", pause: 650 },
   { text: "Welcome back, Rubans" },
@@ -160,7 +160,7 @@ export default function BootScreen({
         className={`boot-screen ${fading ? "fade" : ""}`}
         onClick={onSkip}
       >
-      <h1>PortfolioOS v1.2</h1>
+      <h1>Portfolio</h1>
 
       <small>Linux 6.16.0-arch1</small>
 

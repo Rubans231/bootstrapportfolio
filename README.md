@@ -1,4 +1,4 @@
-# NaranderOS — portfolio
+# Portfolio
 
 Not a traditional portfolio. Three workspaces: a Knowledge Base (a real, live file
 tree + reader + graph pulled straight from my ZenNotes vault on GitHub), Projects
@@ -23,12 +23,14 @@ src/
   app/App.tsx            – boot gate, routes, lazy-loaded Projects/About
   lib/
     i18n.tsx              – EN/日本語 context + dictionaries
-    github.ts              – live repo metadata + README fetch (Projects page)
+    github.ts              – live repo metadata + README + optional per-project
+                              .portfolio-log fetch (Projects page)
     vault.ts                – live vault tree + graph + note content (Knowledge page)
     cache.ts                 – shared sessionStorage cache w/ TTL
     asciiFont.ts              – tiny block font for project-name ASCII banners
   hooks/
     useBoot.ts, usePageTitle.ts, useRepoData.ts
+    useMouseParallax.ts        – shared window mouse-offset + "recently active" state
   components/
     boot/                 – BootScreen (typing terminal log)
     layout/                – Shell, TopBar (Waybar modules), StatusBar (workspace nav)
@@ -36,14 +38,18 @@ src/
     knowledge/               – GraphCanvas (live graph, reactive to mouse),
                               VaultTree (LazyVim-style tree, vim bindings),
                               NoteReader (renders selected note, resolves [[wikilinks]]),
+                              WelcomeNote (hand-authored landing content),
                               VaultExplorer (glass panel combining tree + reader)
-    about/AboutParallaxBackground.tsx  – fastfetch + IEM background, About page only
+    about/                   – AboutParallaxBackground (fastfetch + IEM background),
+                              RMPCBackground + Cava (rmpc/cava-style widget, bottom-left,
+                              only "plays" while the mouse is active),
+                              LiveLogFeed (top-right, continuously-flowing fake activity log)
     projects/               – WorkspaceTabs, ProjectWorkspace, TiledTerminalBackground,
                               TerminalTile, ReadmeView
   pages/
     Knowledge/KnowledgePage.tsx
     Projects/ProjectsPage.tsx
-    About/AboutPage.tsx
+    About/AboutPage.tsx, AboutEN.tsx, AboutJA.tsx
   data/
     projects.ts             – curated project list + repoSlug for live GitHub data
   styles/                    – themes.css (tokens), one file per section
@@ -67,11 +73,24 @@ GraphQL API with an auth token, which isn't safe to embed in client-side code. S
 show up), while everything *about* each one — stars, language, last push, and the
 full README — is fetched live from `api.github.com` / `raw.githubusercontent.com`.
 
+## Giving a project its own background log
+
+Each project's tiled terminal background shows a fastfetch/ASCII tile, a build-log
+tile, and a git-log-style tile. That last one can be replaced with your own real
+content: drop a plain text file named **`.portfolio-log`** at the root of *that
+project's own repo* (not this portfolio repo) — one log line per line, whatever you
+want it to say. `lib/github.ts#fetchProjectLog` checks for it live on every visit
+(main branch, then master), and falls back silently to the generated placeholder
+lines if the file doesn't exist. No redeploy needed here — add the file to the
+project repo and it shows up the next time the cache expires (an hour).
+
 ## i18n scope
 
-The EN/日本語 toggle translates UI chrome, the Knowledge Base panel, and About's
-section headers. It does **not** translate live-fetched GitHub content (READMEs or
-vault notes) — that stays in whatever language it's written in on GitHub.
+The EN/日本語 toggle swaps in genuinely separate About page content (`AboutEN.tsx` /
+`AboutJA.tsx`, not a translated copy of the same text) plus translates the rest of
+the UI chrome and the Knowledge Base panel. It does **not** translate live-fetched
+GitHub content (READMEs or vault notes) — that stays in whatever language it's
+written in on GitHub.
 
 ## Vim bindings in the vault tree
 

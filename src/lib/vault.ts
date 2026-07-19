@@ -85,22 +85,24 @@ const CLUSTER_MAP: Record<string, string> = {
 function buildTree(notes: VaultNote[]): TreeNode[] {
   const root: TreeNode[] = [];
 
-  function insert(parts: string[], path: string, siblings: TreeNode[]) {
+  function insert(parts: string[], fullPath: string, siblings: TreeNode[], prefix: string) {
     const [head, ...rest] = parts;
+    const currentPath = prefix ? `${prefix}/${head}` : head;
+
     if (rest.length === 0) {
-      siblings.push({ name: head, path, type: "file" });
+      siblings.push({ name: head, path: fullPath, type: "file" });
       return;
     }
     let folder = siblings.find((n) => n.type === "folder" && n.name === head);
     if (!folder) {
-      folder = { name: head, path: path.split("/").slice(0, parts.length - rest.length).join("/") || head, children: [], type: "folder" };
+      folder = { name: head, path: currentPath, children: [], type: "folder" };
       siblings.push(folder);
     }
-    insert(rest, path, folder.children!);
+    insert(rest, fullPath, folder.children!, currentPath);
   }
 
   for (const note of notes) {
-    insert(note.path.split("/"), note.path, root);
+    insert(note.path.split("/"), note.path, root, "");
   }
 
   function sortRec(nodes: TreeNode[]) {

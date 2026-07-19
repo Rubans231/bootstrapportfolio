@@ -65,6 +65,26 @@ all from that single source. Individual note bodies are fetched on demand
 `Personal-Notes` and it shows up here within the cache window — nothing to rebuild
 or redeploy on this end.
 
+## Graph physics
+
+The Knowledge Base graph runs on `3d-force-graph` (WebGL/three.js), not the 2D
+canvas version — nodes are pulled toward a fixed radius from center via a custom
+`sphere` force (so the whole thing holds a sphere/constellation shape, connected
+or not), the camera auto-rotates slowly like a planet, and a small periodic
+reheat keeps it gently flowing instead of freezing solid. Mouse proximity adds a
+further gentle push. This is a real dependency-weight tradeoff — see below.
+
+**Weight:** the 3D engine (three.js + 3d-force-graph + three-spritetext) is
+lazy-loaded into its own chunk, separate from the app shell, so nav/tree/reader
+load fast regardless. That chunk itself is ~1.4MB (~370KB gzipped) — noticeably
+heavier than the old 2D canvas graph. Mitigations already in place:
+device-pixel-ratio is capped (more so on phones), node name labels only render
+for tag/hub nodes on small screens or `prefers-reduced-motion`, and the
+auto-rotate/reheat loop is skipped entirely for `prefers-reduced-motion` and
+throttled on small screens. It'll run on a modern phone, but it's a heavier tab
+than the rest of this site by a wide margin — worth knowing if that ever needs
+to change.
+
 ## On "pulled from GitHub, nothing hardcoded" (Projects page)
 
 GitHub's REST API has no public "pinned repos" concept — that only exists via the

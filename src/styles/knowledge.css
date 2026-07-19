@@ -11,6 +11,14 @@
   z-index: 0;
 }
 
+.graph-canvas-loading {
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(191, 141, 99, 0.06),
+    transparent 60%
+  );
+}
+
 /* ---------------- Loading / error states ---------------- */
 
 .knowledge-loading,

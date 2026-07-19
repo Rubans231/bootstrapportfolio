@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
-import GraphCanvas from "../../components/knowledge/GraphCanvas";
+import { useEffect, useState, Suspense, lazy } from "react";
 import VaultExplorer from "../../components/knowledge/VaultExplorer";
 import { fetchVault, WELCOME_PATH } from "../../lib/vault";
 import type { VaultData } from "../../lib/vault";
 import { useLang } from "../../lib/i18n";
 
 import "../../styles/knowledge.css";
+
+const GraphCanvas = lazy(() => import("../../components/knowledge/GraphCanvas"));
 
 export default function KnowledgePage() {
     const [vault, setVault] = useState<VaultData | null>(null);
@@ -54,7 +55,9 @@ export default function KnowledgePage() {
 
     return (
         <section className="knowledge-page">
-            <GraphCanvas nodes={vault.graph.nodes} links={vault.graph.links} onNodeOpen={openNote} />
+            <Suspense fallback={<div className="graph-canvas graph-canvas-loading" />}>
+                <GraphCanvas nodes={vault.graph.nodes} links={vault.graph.links} onNodeOpen={openNote} />
+            </Suspense>
 
             {panelVisible ? (
                 <VaultExplorer

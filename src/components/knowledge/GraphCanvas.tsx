@@ -4,11 +4,13 @@ import SpriteText from "three-spritetext";
 import type { Object3D } from "three";
 import { useSearchParams } from "react-router-dom";
 import type { GraphNode, GraphLink } from "../../lib/vault";
+import type { GraphSettings } from "../../hooks/useGraphSettings";
 
 interface Props {
   nodes: GraphNode[];
   links: GraphLink[];
   onNodeOpen?: (path: string) => void;
+  settings: GraphSettings;
 }
 
 type SimNode = GraphNode & {
@@ -19,6 +21,9 @@ type SimNode = GraphNode & {
   vy?: number;
   vz?: number;
 };
+
+type ThreeControls = { autoRotate?: boolean; autoRotateSpeed?: number };
+type AlphaTargetGraph = { d3AlphaTarget: (v: number) => void };
 
 const CLUSTER_COLOR: Record<string, string> = {
   japanese: "#e0a35c",
@@ -35,14 +40,31 @@ const SPHERE_PULL = 0.05; // how strongly nodes are held to the shell (0-1ish)
 const LINK_DISTANCE = 26; // shorter = connected nodes hug tighter into visible clusters
 const CHARGE_STRENGTH = -6; // weak repulsion — just enough to avoid total overlap
 const REPEL_RADIUS = 70; // mouse influence radius
-const REPEL_STRENGTH = 3; // gentle push, additive to the ambient flow
-const AUTO_ROTATE_SPEED = 0.35; // slow "planet" spin
-const REHEAT_INTERVAL_MS = 2600; // keeps the shell gently alive instead of ever fully freezing
 
-export default function GraphCanvas({ nodes, links, onNodeOpen }: Props) {
+// Rotation speed dial (0–1) → actual OrbitControls.autoRotateSpeed
+const ROTATION_SPEED_MIN = 0.08;
+const ROTATION_SPEED_MAX = 1.4;
+
+// Fluidity dial (0–1) → mouse-repel strength
+const FLUIDITY_MIN = 0.8;
+const FLUIDITY_MAX = 7;
+
+// Ambient idle drift — a small constant alphaTarget instead of periodic
+// reheat "pulses", so the shell reads as slowly, minutely adrift rather
+// than heartbeat-pulsing.
+const DRIFT_ALPHA_TARGET = 0.012;
+
+export default function GraphCanvas({ nodes, links, onNodeOpen, settings }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [params] = useSearchParams();
   const focusParam = params.get("focus")?.toLowerCase() ?? null;
+
+  // live-tunable values the running simulation reads each tick, updated by
+  // the settings-sync effect below without tearing down the graph
+  const fluidityRef = useRef(settings.fluidity);
+  const graphApiRef = useRef<{
+    controls: () => ThreeControls;
+  } | null>(null);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -130,6 +152,8 @@ export default function GraphCanvas({ nodes, links, onNodeOpen }: Props) {
       })
       .enableNodeDrag(true);
 
+    graphApiRef.current = { controls: () => Graph.controls() as ThreeControls };
+
     const renderer = Graph.renderer();
     if (renderer) {
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, lite ? 1.5 : 2));
@@ -156,10 +180,12 @@ export default function GraphCanvas({ nodes, links, onNodeOpen }: Props) {
       }
     });
 
-    // Gentle mouse-reactive push — additive to the ambient flow, not a
-    // freeze/unfreeze mechanic like a 2D hover effect.
+    // Gentle mouse-reactive push — additive to the ambient flow. Strength
+    // reads fluidityRef live, so the settings slider takes effect instantly
+    // without recreating the graph.
     Graph.d3Force("mouseRepel", (alpha: number) => {
       if (!mouse) return;
+      const strength = FLUIDITY_MIN + fluidityRef.current * (FLUIDITY_MAX - FLUIDITY_MIN);
       for (const n of Graph.graphData().nodes as SimNode[]) {
         if (n.x === undefined || n.y === undefined || n.z === undefined) continue;
         const dx = n.x - mouse.x;
@@ -167,30 +193,30 @@ export default function GraphCanvas({ nodes, links, onNodeOpen }: Props) {
         const dz = n.z - mouse.z;
         const dist = Math.sqrt(dx * dx + dy * dy + dz * dz) || 1;
         if (dist >= REPEL_RADIUS) continue;
-        const f = (1 - dist / REPEL_RADIUS) * REPEL_STRENGTH * alpha;
+        const f = (1 - dist / REPEL_RADIUS) * strength * alpha;
         n.vx = (n.vx ?? 0) + (dx / dist) * f;
         n.vy = (n.vy ?? 0) + (dy / dist) * f;
         n.vz = (n.vz ?? 0) + (dz / dist) * f;
       }
     });
 
-    // Slow constant spin, like a planet — OrbitControls handles the actual
-    // per-frame rotation internally. Skipped for prefers-reduced-motion.
-    const controls = Graph.controls() as { autoRotate?: boolean; autoRotateSpeed?: number };
+    // Idle rotation — applied/updated live by the settings-sync effect too,
+    // but set here for the very first frame.
+    const controls = Graph.controls() as ThreeControls;
     if (controls && !prefersReducedMotion) {
-      controls.autoRotate = true;
-      controls.autoRotateSpeed = AUTO_ROTATE_SPEED;
+      controls.autoRotate = settings.rotationEnabled;
+      controls.autoRotateSpeed =
+        ROTATION_SPEED_MIN + settings.rotationSpeed * (ROTATION_SPEED_MAX - ROTATION_SPEED_MIN);
     }
 
-    // Keep the shell gently alive — a small periodic reheat rather than a
-    // one-time settle-then-freeze, so it always reads as "flowing". Backed
-    // off on phones / reduced-motion so it isn't a sustained battery drain.
-    const reheatInterval = prefersReducedMotion
-      ? undefined
-      : window.setInterval(
-          () => Graph.d3ReheatSimulation(),
-          lite ? REHEAT_INTERVAL_MS * 2.5 : REHEAT_INTERVAL_MS
-        );
+    // Constant tiny ambient energy instead of periodic reheat bursts — the
+    // shell reads as slowly, minutely drifting rather than pulsing.
+    if (!prefersReducedMotion) {
+      const alphaTargetFn = (Graph as unknown as Partial<AlphaTargetGraph>).d3AlphaTarget;
+      if (typeof alphaTargetFn === "function") {
+        alphaTargetFn.call(Graph, DRIFT_ALPHA_TARGET);
+      }
+    }
 
     function handleMouseMove(ev: MouseEvent) {
       const rect = el!.getBoundingClientRect();
@@ -226,14 +252,29 @@ export default function GraphCanvas({ nodes, links, onNodeOpen }: Props) {
 
     return () => {
       window.removeEventListener("resize", onResize);
-      window.clearInterval(reheatInterval);
       window.clearTimeout(focusTimeout);
       el.removeEventListener("mousemove", handleMouseMove);
       el.removeEventListener("mouseleave", handleMouseLeave);
+      graphApiRef.current = null;
       Graph._destructor();
       el.innerHTML = "";
     };
+    // settings intentionally excluded here — handled live by the effect below
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nodes, links, focusParam, onNodeOpen]);
+
+  // Sync live-adjustable settings into the running simulation without
+  // recreating the whole graph (recreating on every slider tick would jolt
+  // the layout each time).
+  useEffect(() => {
+    fluidityRef.current = settings.fluidity;
+    const controls = graphApiRef.current?.controls();
+    if (controls) {
+      controls.autoRotate = settings.rotationEnabled;
+      controls.autoRotateSpeed =
+        ROTATION_SPEED_MIN + settings.rotationSpeed * (ROTATION_SPEED_MAX - ROTATION_SPEED_MIN);
+    }
+  }, [settings]);
 
   return <div className="graph-canvas" ref={containerRef} />;
 }

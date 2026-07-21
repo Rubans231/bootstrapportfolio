@@ -35,26 +35,28 @@ const CLUSTER_COLOR: Record<string, string> = {
 };
 
 // Tuning knobs for the "planet" feel — all in graph-space units.
-const SPHERE_RADIUS = 220; // every node is gently pulled toward this distance from center
-const SPHERE_PULL = 0.05; // how strongly nodes are held to the shell (0-1ish)
+const SPHERE_RADIUS_TIGHT = 220; // default: nodes hug a shell at this radius
+const SPHERE_RADIUS_SPREAD = 420; // "spread out": looser, but still contained
+const SPHERE_PULL = 0.05;
 const LINK_DISTANCE = 26; // shorter = connected nodes hug tighter into visible clusters
 const CHARGE_STRENGTH = -6; // weak repulsion — just enough to avoid total overlap
-const REPEL_RADIUS = 70; // mouse influence radius
+const DRAG_DISPLACE_RADIUS = 55;
 
 // Rotation speed dial (0–1) → actual OrbitControls.autoRotateSpeed
 const ROTATION_SPEED_MIN = 0.08;
 const ROTATION_SPEED_MAX = 1.4;
 
-// Fluidity dial (0–1) → mouse-repel strength
-const FLUIDITY_MIN = 0.8;
-const FLUIDITY_MAX = 7;
+// Fluidity dial (0–1) → how hard nearby nodes get pushed while dragging one
+// through them
+const DRAG_STRENGTH_MIN = 1.5;
+const DRAG_STRENGTH_MAX = 12;
 
 // Ambient idle drift — a small constant alphaTarget instead of periodic
 // reheat "pulses", so the shell reads as slowly, minutely adrift rather
 // than heartbeat-pulsing.
 const DRIFT_ALPHA_TARGET = 0.012;
 
-export default function GraphCanvas({ nodes, links, onNodeOpen, settings }: Props) {
+export default function GraphCanvas3D({ nodes, links, onNodeOpen, settings }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [params] = useSearchParams();
   const focusParam = params.get("focus")?.toLowerCase() ?? null;
@@ -62,6 +64,7 @@ export default function GraphCanvas({ nodes, links, onNodeOpen, settings }: Prop
   // live-tunable values the running simulation reads each tick, updated by
   // the settings-sync effect below without tearing down the graph
   const fluidityRef = useRef(settings.fluidity);
+  const spreadRef = useRef(settings.spreadOut);
   const graphApiRef = useRef<{
     controls: () => ThreeControls;
   } | null>(null);
@@ -94,7 +97,11 @@ export default function GraphCanvas({ nodes, links, onNodeOpen, settings }: Prop
 
     let hoveredId: string | null = null;
     const activeId = () => hoveredId ?? stickyId;
-    let mouse: { x: number; y: number; z: number } | null = null;
+
+    // live position of the node currently being dragged (graph space) —
+    // null when nothing is being dragged
+    let draggedPos: { x: number; y: number; z: number } | null = null;
+    let draggedId: string | null = null;
 
     const Graph = new ForceGraph3D(el)
       .graphData({ nodes: nodeCopies, links: linkCopies })
@@ -150,6 +157,17 @@ export default function GraphCanvas({ nodes, links, onNodeOpen, settings }: Prop
         const node = n as GraphNode;
         if (onNodeOpen && node.group === "note") onNodeOpen(node.path);
       })
+      .onNodeDrag((n: object) => {
+        const node = n as SimNode;
+        draggedId = node.id;
+        if (node.x !== undefined && node.y !== undefined && node.z !== undefined) {
+          draggedPos = { x: node.x, y: node.y, z: node.z };
+        }
+      })
+      .onNodeDragEnd(() => {
+        draggedPos = null;
+        draggedId = null;
+      })
       .enableNodeDrag(true);
 
     graphApiRef.current = { controls: () => Graph.controls() as ThreeControls };
@@ -167,33 +185,37 @@ export default function GraphCanvas({ nodes, links, onNodeOpen, settings }: Prop
     link?.distance?.(LINK_DISTANCE);
 
     // Every node — connected or not — is pulled toward a fixed radius from
-    // the center, so the whole thing holds a sphere shape instead of
-    // sprawling. Nodes still drift/orbit gently within that shell.
+    // the center, so the whole thing always holds a sphere/constellation
+    // shape. "Spread out" loosens the radius rather than removing the
+    // constraint, so nothing drifts away permanently.
     Graph.d3Force("sphere", (alpha: number) => {
+      const radius = spreadRef.current ? SPHERE_RADIUS_SPREAD : SPHERE_RADIUS_TIGHT;
       for (const n of Graph.graphData().nodes as SimNode[]) {
         if (n.x === undefined || n.y === undefined || n.z === undefined) continue;
         const r = Math.sqrt(n.x * n.x + n.y * n.y + n.z * n.z) || 1;
-        const pull = (SPHERE_RADIUS - r) * SPHERE_PULL * alpha;
+        const pull = (radius - r) * SPHERE_PULL * alpha;
         n.vx = (n.vx ?? 0) + (n.x / r) * pull;
         n.vy = (n.vy ?? 0) + (n.y / r) * pull;
         n.vz = (n.vz ?? 0) + (n.z / r) * pull;
       }
     });
 
-    // Gentle mouse-reactive push — additive to the ambient flow. Strength
-    // reads fluidityRef live, so the settings slider takes effect instantly
-    // without recreating the graph.
-    Graph.d3Force("mouseRepel", (alpha: number) => {
-      if (!mouse) return;
-      const strength = FLUIDITY_MIN + fluidityRef.current * (FLUIDITY_MAX - FLUIDITY_MIN);
+    // While dragging a node, nearby ones get pushed out of its way like
+    // it's moving through fluid, and settle back via the forces above the
+    // instant you let go. Nothing happens when nothing is being dragged —
+    // no passive mouse-position repel anymore.
+    Graph.d3Force("dragDisplace", (alpha: number) => {
+      if (!draggedPos || !draggedId) return;
+      const strength = DRAG_STRENGTH_MIN + fluidityRef.current * (DRAG_STRENGTH_MAX - DRAG_STRENGTH_MIN);
       for (const n of Graph.graphData().nodes as SimNode[]) {
+        if (n.id === draggedId) continue;
         if (n.x === undefined || n.y === undefined || n.z === undefined) continue;
-        const dx = n.x - mouse.x;
-        const dy = n.y - mouse.y;
-        const dz = n.z - mouse.z;
+        const dx = n.x - draggedPos.x;
+        const dy = n.y - draggedPos.y;
+        const dz = n.z - draggedPos.z;
         const dist = Math.sqrt(dx * dx + dy * dy + dz * dz) || 1;
-        if (dist >= REPEL_RADIUS) continue;
-        const f = (1 - dist / REPEL_RADIUS) * strength * alpha;
+        if (dist >= DRAG_DISPLACE_RADIUS) continue;
+        const f = (1 - dist / DRAG_DISPLACE_RADIUS) * strength * alpha;
         n.vx = (n.vx ?? 0) + (dx / dist) * f;
         n.vy = (n.vy ?? 0) + (dy / dist) * f;
         n.vz = (n.vz ?? 0) + (dz / dist) * f;
@@ -217,16 +239,6 @@ export default function GraphCanvas({ nodes, links, onNodeOpen, settings }: Prop
         alphaTargetFn.call(Graph, DRIFT_ALPHA_TARGET);
       }
     }
-
-    function handleMouseMove(ev: MouseEvent) {
-      const rect = el!.getBoundingClientRect();
-      mouse = Graph.screen2GraphCoords(ev.clientX - rect.left, ev.clientY - rect.top, 0);
-    }
-    function handleMouseLeave() {
-      mouse = null;
-    }
-    el.addEventListener("mousemove", handleMouseMove);
-    el.addEventListener("mouseleave", handleMouseLeave);
 
     let focusTimeout: number | undefined;
     if (stickyId) {
@@ -253,8 +265,6 @@ export default function GraphCanvas({ nodes, links, onNodeOpen, settings }: Prop
     return () => {
       window.removeEventListener("resize", onResize);
       window.clearTimeout(focusTimeout);
-      el.removeEventListener("mousemove", handleMouseMove);
-      el.removeEventListener("mouseleave", handleMouseLeave);
       graphApiRef.current = null;
       Graph._destructor();
       el.innerHTML = "";
@@ -268,6 +278,7 @@ export default function GraphCanvas({ nodes, links, onNodeOpen, settings }: Prop
   // the layout each time).
   useEffect(() => {
     fluidityRef.current = settings.fluidity;
+    spreadRef.current = settings.spreadOut;
     const controls = graphApiRef.current?.controls();
     if (controls) {
       controls.autoRotate = settings.rotationEnabled;

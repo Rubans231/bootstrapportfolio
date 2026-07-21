@@ -19,6 +19,120 @@
   );
 }
 
+/* ---------------- Graph settings ---------------- */
+
+.graph-settings {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 2;
+}
+
+.graph-settings-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  color: var(--muted);
+  background: var(--glass);
+  backdrop-filter: blur(var(--panel-blur));
+  border: 1px solid var(--border);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.graph-settings-toggle:hover {
+  color: var(--accent);
+  border-color: var(--accent-soft);
+}
+
+.graph-settings-panel {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 220px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border-radius: var(--radius-md);
+  background: var(--glass);
+  backdrop-filter: blur(var(--panel-blur));
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+}
+
+.graph-settings-title {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--border-light);
+  margin: 0;
+}
+
+.graph-settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.graph-settings-slider-row {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+}
+
+.graph-settings-row input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.graph-settings-row input[type="checkbox"] {
+  accent-color: var(--accent);
+}
+
+.graph-settings-segmented {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.graph-settings-segmented button {
+  padding: 3px 10px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--muted);
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.graph-settings-segmented button.active {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.graph-settings-note {
+  font-size: 0.68rem;
+  line-height: 1.5;
+  color: var(--border-light);
+  font-style: italic;
+  margin: 0;
+}
+
+@media (max-width: 860px) {
+  .graph-settings {
+    top: auto;
+    bottom: 1.5rem;
+    right: 1rem;
+  }
+}
+
 /* ---------------- Loading / error states ---------------- */
 
 .knowledge-loading,

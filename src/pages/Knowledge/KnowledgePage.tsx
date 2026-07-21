@@ -1,12 +1,15 @@
 import { useEffect, useState, Suspense, lazy } from "react";
 import VaultExplorer from "../../components/knowledge/VaultExplorer";
+import GraphSettingsPanel from "../../components/knowledge/GraphSettingsPanel";
 import { fetchVault, WELCOME_PATH } from "../../lib/vault";
 import type { VaultData } from "../../lib/vault";
 import { useLang } from "../../lib/i18n";
+import { useGraphSettings } from "../../hooks/useGraphSettings";
 
 import "../../styles/knowledge.css";
 
-const GraphCanvas = lazy(() => import("../../components/knowledge/GraphCanvas"));
+const GraphCanvas3D = lazy(() => import("../../components/knowledge/GraphCanvas3D"));
+const GraphCanvas2D = lazy(() => import("../../components/knowledge/GraphCanvas2D"));
 
 export default function KnowledgePage() {
     const [vault, setVault] = useState<VaultData | null>(null);
@@ -14,6 +17,7 @@ export default function KnowledgePage() {
     const [activePath, setActivePath] = useState<string | null>(WELCOME_PATH);
     const [panelVisible, setPanelVisible] = useState(true);
     const { t } = useLang();
+    const { settings, update } = useGraphSettings();
 
     useEffect(() => {
         let cancelled = false;
@@ -56,8 +60,24 @@ export default function KnowledgePage() {
     return (
         <section className="knowledge-page">
             <Suspense fallback={<div className="graph-canvas graph-canvas-loading" />}>
-                <GraphCanvas nodes={vault.graph.nodes} links={vault.graph.links} onNodeOpen={openNote} />
+                {settings.renderer === "3d" ? (
+                    <GraphCanvas3D
+                        nodes={vault.graph.nodes}
+                        links={vault.graph.links}
+                        onNodeOpen={openNote}
+                        settings={settings}
+                    />
+                ) : (
+                    <GraphCanvas2D
+                        nodes={vault.graph.nodes}
+                        links={vault.graph.links}
+                        onNodeOpen={openNote}
+                        settings={settings}
+                    />
+                )}
             </Suspense>
+
+            <GraphSettingsPanel settings={settings} onChange={update} />
 
             {panelVisible ? (
                 <VaultExplorer

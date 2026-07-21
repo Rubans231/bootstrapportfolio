@@ -292,14 +292,79 @@
   text-decoration: none;
 }
 
+@media (max-width: 1300px) {
+  .about-bg-fastfetch-top {
+    top: 5rem;
+    left: 1.5rem;
+  }
+  .about-bg-fastfetch-bottom {
+    right: 1.5rem;
+    bottom: 2rem;
+  }
+  .live-log-feed {
+    top: 5rem;
+    right: 1.5rem;
+    width: 280px;
+  }
+  .rmpc {
+    left: 1.5rem;
+    width: 440px;
+  }
+  .about-bg-row {
+    gap: 60px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .about-bg-fastfetch-top .about-bg-ascii,
+  .about-bg-fastfetch-bottom .about-bg-ascii {
+    font-size: 7px;
+    line-height: 7px;
+  }
+  .about-bg-info {
+    font-size: 0.78rem;
+  }
+  .live-log-feed {
+    width: 220px;
+    max-height: 200px;
+    font-size: 0.65rem;
+  }
+  .rmpc {
+    width: 360px;
+  }
+  .cover {
+    width: 76px;
+    height: 76px;
+  }
+  .about-bg-layer {
+    height: 24vh;
+    min-height: 160px;
+  }
+  .about-bg-row {
+    gap: 40px;
+  }
+}
+
+/* Below this, five independent floating layers can't coexist without
+   overlapping on any reasonable viewport — hide the decorative background
+   entirely rather than let it collide, and let the real content stand on
+   its own. */
+@media (max-width: 860px) {
+  .rmpc,
+  .live-log-feed {
+    display: none;
+  }
+}
+
 @media (max-width: 640px) {
   .offclock-grid {
     grid-template-columns: 1fr;
     gap: 14px;
   }
 
-  .about-bg-layer {
-    height: 50vh;
+  .about-bg-fastfetch,
+  .about-bg-row {
+    display: none;
   }
 }
 

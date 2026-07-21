@@ -1,5 +1,7 @@
 # Portfolio
 
+Hosted on: https://naranderrubansportfolio.netlify.app/
+
 Not a traditional portfolio. Three workspaces: a Knowledge Base (a real, live file
 tree + reader + graph pulled straight from my ZenNotes vault on GitHub), Projects
 (each one its own tiled-terminal workspace, pulling live from GitHub), and About

@@ -91,7 +91,6 @@ export default function Cava({ active, onEnergyChange }: Props) {
     for (let i = 0; i < BAR_COUNT; i++) {
 
     // Small random flutter
-      const noise = Math.random() * 6;
 
       const bin = Math.floor(i / (BAR_COUNT / BIN_COUNT));
 
